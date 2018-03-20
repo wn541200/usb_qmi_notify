@@ -1,0 +1,4 @@
+service usb_notify /vendor/bin/usb_notify
+    class main
+    user root
+    group root

@@ -1,0 +1,16 @@
+
+revision 1;
+
+message {
+	mandatory uint8 buf[32];
+	mandatory uint8 len;
+} ssc_log_print_req_msg;
+
+message {
+    mandatory uint8 result;
+} ssc_log_print_resp_msg;
+
+service ssc_log_print {
+	ssc_log_print_req_msg QMI_SSC_LOG_PRINT_REQ,
+	ssc_log_print_resp_msg QMI_SSC_LOG_PRINT_RESP;
+} = 0x0876;

@@ -1,0 +1,78 @@
+QMI IDL Compiler Version 6.14.9 Release to Customers:
+- Corrected spin version.
+QMI IDL Compiler Version 6.14.8 Release to Customers:
+- Restored the List::MoreUtils::any() with Smartmatch operator (~~). “--remove-msgs” is not working properly with List::MoreUtils::any(), hence reverted Smartmatch operator (~~).
+
+QMI IDL Compiler Version 6.14.7 Release to Customers:
+
+The IDL compiler version 6.14.7 uses Perl version 5.18. Recommendation is to use same Perl version. 
+This release contains below enhancements and fixes on the IDL compiler.
+- Added Minor Revision Information to the auto-generated HTML files
+- Added warning message for enum values defined in IDL files being greater than maximum value that can be represented by signed 32-bit. The warning message that would appear is “some compilers do not support unsigned int32 values”.
+- Updated Smartmatch operator (~~) with List::MoreUtils::any()
+- Bug fix for error "use of uninitialized value in numeric eq (==) at qmi_idl_xml_output.pm line 640"
+
+Version 6.14.5 Release to Customers:
+
+In order to use Inheritance/JSON features of the compiler, customers need to have Perl JSON library installed on their system.
+This version contains enhancements to generate JSON parsed output from IDL files so that customers can do their own 
+custom processing on the json files. This version also provides IDL Inheritance feature which can be used for:
+- Message extension
+- Redefining an existing message
+- Adding new messages/commands to the Base service
+- Message removal and
+- Service Inheritance. 
+Examples and more information about the IDL Inheritance feature can be obtained from QTI API GUIDELINES AND TOOLS (80-N0846-1 Rev C) Document.
+
+Version 6.13 Release to Customers:
+
+This version adds enhancements for generating better and more consistent documentation. Version 6.13 of IDL compiler uses Perl version 5.10.1, hence it is strongly recommended that the Perl
+environment be upgraded to at least version 5.10.1. There will be compilation errors on using the tool if the Perl version is less than 5.10.1.
+This version also provides features to reserve the TLV IDs of the attributes in the messages and the Message IDs by using keywords "reserved_tlvs" and "reserved_msgs" respectively.
+Syntax of reserved_tlvs:
+message{ 
+reserved_tlvs 0x11,0x12,0x15,0x1F;
+'field-definition'
+} 'message-name';
+where 0x11, 0x12 etc are the TLV IDs to be reserved.
+Note: The reserved_tlvs keyword should be declared before the other field-definitions in the message. Using the above keyword ensures that none of the TLVs inside the message will use this TLV IDs. However, 
+in case if the data-type is assigned an explicit TLV ID then the reserved TLV ID is overridden.
+A range of TLV IDs can be reserved using the syntax:
+"reserved_tlvs 0x11:0x1F;"
+
+Syntax of reserved_msgs:
+service 'service-name' {
+ reserved_msgs 0x0000, 0x0001, 2:6, 0x0021;
+ ...
+ } = 'service-number' ;
+where 0x0000, 0x0001 and 2:6 are the message IDs and the range of message IDs to be reserved.
+Similar to TLV IDs, reserved message IDs can be overridden if they are explicitly assigned in the service definition.
+Version 6.11 Release to Customers:
+
+This version adds the ability to introduce conditional compilation tags to remove certain messages from the generated .c and .h files of the input IDL file.
+This functionality can be invoked with the --remove-msgs <FILENAME> option. The names of the messages to be removed must be entered in the <FILENAME> in a line
+separated format. The introduced compilation tags are of the format "REMOVE_MSG_NAME".
+For Example: If QMI_TEST_DATA and QMI_TEST_DATA_INDICATION are the messages to be removed, then the "sample_file" to be passed as an argument to "--remove-msgs" option will be of the format
+#cat sample_file
+QMI_TEST_DATA
+QMI_TEST_DATA_INDICATION
+#
+#define's REMOVE_QMI_TEST_DATA_V01 and REMOVE_QMI_TEST_DATA_INDICATION_V01 will be generated in the .h file which can be used in conditional compilation for removing that particular message.
+Note: The appended version (V01 in the above example) depends on in which version of the IDL file the message was defined.
+
+This version also adds the ability to return 0 on sucess and 1 in case of compilation errors while parsing the IDL files.
+
+
+Version 6.2 Release to Customers
+
+
+This version adds the ability to output XML files that are compatible with the QMI Test Pro tool.  This file can be output with the --xml option.
+
+It also adds the ability to output XML files that are meant for backwards compatibility purposes which have the .bwc suffix.  This file can be output with the --bwc option.
+
+Additional Perl modules must be installed in order for the XML output and parsing, XML::Simple and XML::Writer.  If these are not installed then the QMI IDL Compiler will still work, but won't perform any XML input or output.
+
+If you do not have the latest version of the Encode/Decode libraries (Calls to the QCCI/QCSI Framework return error code -48 (QMI_IDL_LIB_UNRECOGNIZED_SERVICE_VERSION) you can run the QMI IDL Compiler with the command line option: 
+
+--out-version 5 in order to get the version that will work with your current Encode/Decode library.
+

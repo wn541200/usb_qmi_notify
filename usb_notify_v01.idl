@@ -1,0 +1,15 @@
+
+revision 1;
+
+message {
+	mandatory uint8 state;
+} usb_state_req_msg;
+
+message {
+    mandatory uint8 result;
+} usb_state_resp_msg;
+
+service usb_notify {
+	usb_state_req_msg QMI_USB_STATE_REQ,
+	usb_state_resp_msg QMI_USB_STATE_RESP;
+} = 0x08FF;
